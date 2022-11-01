@@ -1,5 +1,6 @@
 package com.example.coursesspringdatajpa.student;
 
+import com.example.coursesspringdatajpa.guardian.Guardian;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -34,24 +35,23 @@ public class Student {
             strategy = GenerationType.SEQUENCE,
             generator = "student_sequence"
     )
-    @Column(name = "studentId")
+    @Column(name = "studentId", nullable = false)
     private Long id;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
     @Column(
             name = "email_address",
             nullable = false,
-            unique = true
+            unique = true,
+            length = 125
     )
-    private String emailId;
-    @Column(name = "guardian_name")
-    private String guardianName;
-    @Column(name = "guardian_email")
-    private String guardianEmail;
-    @Column(name = "guardian_phone")
-    private String guardianPhone;
+    private String emailAddress;
+
+    @Embedded
+    @Column(name = "guardian_id", nullable = false)
+    private Guardian guardian;
 
     @Override
     public boolean equals(Object o) {
