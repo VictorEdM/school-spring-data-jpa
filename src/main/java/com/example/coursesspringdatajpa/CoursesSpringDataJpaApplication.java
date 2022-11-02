@@ -25,7 +25,7 @@ public class CoursesSpringDataJpaApplication implements CommandLineRunner {
 
 	public void saveStudent() {
 		Guardian franz = Guardian.builder()
-				.name("Franz")
+				.name("Franz Henkins")
 				.email("franzH@gmail.com")
 				.phone("36594789")
 				.build();
@@ -37,7 +37,7 @@ public class CoursesSpringDataJpaApplication implements CommandLineRunner {
 				.build();
 
 		Guardian paul = Guardian.builder()
-				.name("Paul")
+				.name("Paul Sutterson")
 				.email("paul@gmail.com")
 				.phone("32659874")
 				.build();
@@ -48,8 +48,21 @@ public class CoursesSpringDataJpaApplication implements CommandLineRunner {
 				.guardian(paul)
 				.build();
 
+		Guardian stan = Guardian.builder()
+				.name("Stan Woklowski")
+				.email("stwoklow@gmail.com")
+				.phone("32654895")
+				.build();
+		Student walter = Student.builder()
+				.firstName("Walter")
+				.lastName("Woklowski")
+				.emailAddress("walterWoklowski@gmail.com")
+				.guardian(stan)
+				.build();
+
 		studentRepository.save(carl);
 		studentRepository.save(hank);
+		studentRepository.save(walter);
 	}
 
 	public void fetchStudents() {
@@ -58,9 +71,71 @@ public class CoursesSpringDataJpaApplication implements CommandLineRunner {
 		students.forEach(System.out::println);
 	}
 
+	public void fetchStudentsByFirstName() {
+		String firstName = "Hank";
+		List<Student> students = studentRepository.findByFirstName(firstName);
+		System.out.println("\nFIND STUDENTS BY FIRST NAME: " + firstName);
+		students.forEach(System.out::println);
+	}
+
+	public void fetchStudentsByLastName() {
+		String lastName = "Henkins";
+		List<Student> students = studentRepository.findByLastName(lastName);
+		System.out.println("\nFIND STUDENTS BY LAST NAME: " + lastName);
+		students.forEach(System.out::println);
+	}
+
+
+	public void fetchStudentByFirstNameContaining() {
+		String firstName = "lt";
+		List<Student> studentsWithLt = studentRepository.findByFirstNameContaining(firstName);
+		System.out.println("\nFIND STUDENTS BY FIRST NAME CONTAINING GIVEN SUBSTRING: " + firstName);
+		studentsWithLt.forEach(System.out::println);
+	}
+
+	public void fetchStudentByGuardianName() {
+		String name = "Paul Sutterson";
+		List<Student> students = studentRepository.findStudentsByGuardianName(name);
+		System.out.println("\nFIND STUDENTS BY GUARDIAN NAME: " + name);
+		students.forEach(System.out::println);
+	}
+
+	public void fetchStudentByEmailAddress() {
+		String email = "walterWoklowski@gmail.com";
+		Student student = studentRepository.findStudentByEmailAddress(email);
+		System.out.println("\nFIND STUDENT BY EMAIL ADDRESS: " + email);
+		System.out.println(student);
+	}
+
+	public void fetchStudentFirstNameByEmailAddress() {
+		String email = "walterWoklowski@gmail.com";
+		String studentFirstName = studentRepository.findStudentFirstNameByEmailAddress(email);
+		System.out.println("\nFIND STUDENT FIRST NAME BY EMAIL ADDRESS: " + email);
+		System.out.println(studentFirstName);
+	}
+
+	public static void lineDivisor() {
+		System.out.println("==============================================================================");
+	}
+
 	@Override
 	public void run(String... args) throws Exception {
 		saveStudent();
+		lineDivisor();
 		fetchStudents();
+		lineDivisor();
+		fetchStudentsByFirstName();
+		lineDivisor();
+		fetchStudentsByLastName();
+		lineDivisor();
+		fetchStudentByFirstNameContaining();
+		lineDivisor();
+		fetchStudentByGuardianName();
+		lineDivisor();
+		fetchStudentByEmailAddress();
+		lineDivisor();
+		fetchStudentFirstNameByEmailAddress();
+		lineDivisor();
 	}
 }
+

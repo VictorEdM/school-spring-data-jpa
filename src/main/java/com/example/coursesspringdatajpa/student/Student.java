@@ -11,7 +11,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,7 +18,7 @@ import java.util.Objects;
 @Table(
         name = "students",
         uniqueConstraints = @UniqueConstraint(
-                name = "emailid_unique",
+                name = "email_unique",
                 columnNames = "email_address"
         )
 )
@@ -35,18 +34,13 @@ public class Student {
             strategy = GenerationType.SEQUENCE,
             generator = "student_sequence"
     )
-    @Column(name = "studentId", nullable = false)
+    @Column(name = "student_id", nullable = false)
     private Long id;
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 100)
+    @Column(name = "last_name", length = 100)
     private String lastName;
-    @Column(
-            name = "email_address",
-            nullable = false,
-            unique = true,
-            length = 125
-    )
+    @Column(name = "email_address", nullable = false, length = 125)
     private String emailAddress;
 
     @Embedded
@@ -64,5 +58,16 @@ public class Student {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("Name: ").append(firstName).append(" ");
+        sb.append(lastName).append("\n");
+        sb.append("Email: ").append(emailAddress).append("\n");
+        sb.append("Guardian: ").append(guardian).append("\n");
+        return sb.toString();
     }
 }
